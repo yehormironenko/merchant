@@ -1,0 +1,29 @@
+version: '3.0'
+
+services:
+      
+  merchant:
+    build: ./
+    container_name: go_merchant
+    command: go run ./main.go
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - localstack      
+      
+  localstack:
+    image: localstack/localstack:latest
+    environment: 
+      - AWS_DEFAULT_REGION=eu-west-2
+      - EDGE_PORT=4566
+      - SERVICES=dynamodb
+      - KINESIS_PROVIDER=kinesalite
+      - DEBUG=1
+      - PORT_WEB_UI=8081
+    ports:
+      - '4566:4566'
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./init-scripts:/docker-entrypoint-initaws.d"

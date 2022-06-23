@@ -1,0 +1,7 @@
+dynamoDB:
+  dbname: "dynamoDB"
+  endpoint: "http://172.18.0.2:4566"
+  dbhost: "172.18.0.2"
+  dbport: 4566
+  dbuser: bestuser
+  dbpassword: bestuser
