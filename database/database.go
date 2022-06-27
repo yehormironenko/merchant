@@ -7,16 +7,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"log"
+	c "merchant/config"
 	"merchant/pkg/models"
+	"merchant/utils"
 )
 
-/*func ConnectToDatabase() {
-
-	conf, _ := c.LoadConfig("./config/db", "config")
-	// svc := createSession(conf.DynamoDB.Endpoint)
-	log.Print("Connecting to database ", conf.DynamoDB.Endpoint)
-
-}*/
+var conf, _ = c.LoadConfig("./config/db", "config")
+var svc = CreateSession(conf.DynamoDB.Endpoint)
 
 func CreateSession(endpoint string) *dynamodb.DynamoDB {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
@@ -27,7 +24,7 @@ func CreateSession(endpoint string) *dynamodb.DynamoDB {
 	return svc
 }
 
-func GetUser(username string, svc *dynamodb.DynamoDB) (user models.User, err error) {
+func GetUser(username string) (user models.User, err error) {
 	expr, _ := expression.NewBuilder().Build()
 
 	params := &dynamodb.ScanInput{
@@ -56,4 +53,28 @@ func GetUser(username string, svc *dynamodb.DynamoDB) (user models.User, err err
 	}
 	log.Print("User not found...")
 	return user, err
+}
+
+func SaveUser(user models.User) error {
+
+	user.Password, _ = utils.HashPassword(user.Password)
+
+	av, err := dynamodbattribute.MarshalMap(user)
+	if err != nil {
+		log.Fatalf("Got error marshalling new user: %s", err)
+	}
+
+	input := &dynamodb.PutItemInput{
+		Item:      av,
+		TableName: aws.String("users"),
+	}
+	_, err = svc.PutItem(input)
+	if err != nil {
+		log.Fatalf("Got error calling PutItem: %s", err)
+	}
+
+	log.Println("Successfully added item  to table " + "users")
+	log.Printf("Added user: %s", av)
+
+	return nil
 }

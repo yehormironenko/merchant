@@ -1,8 +1,10 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type User struct {
-	ID       string
-	Username string
-	Password string
-	LongName string
+	gorm.Model
+	Username string `gorm:"size:255;not null;unique" json:"username"`
+	Password string `gorm:"size:255;not null;" json:"password"`
+	Longname string `gorm:"size:255;not null;" json:"longname"`
 }
