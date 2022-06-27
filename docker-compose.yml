@@ -10,8 +10,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - localstack      
-      
+    - localstack
+    networks:
+    - service
+
   localstack:
     image: localstack/localstack:latest
     environment: 
@@ -21,9 +23,15 @@ services:
       - KINESIS_PROVIDER=kinesalite
       - DEBUG=1
       - PORT_WEB_UI=8081
+      - HOSTNAME_EXTERNAL=localstack
     ports:
-      - '4566:4566'
+      - "127.0.0.1:4566:4566"
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./init-scripts:/docker-entrypoint-initaws.d"
+    networks:
+      - service
+
+networks:
+  service:
