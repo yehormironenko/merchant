@@ -12,7 +12,7 @@ import (
 	"merchant/utils"
 )
 
-var conf, _ = c.LoadConfig("./config/db", "config")
+var conf, _ = c.LoadConfig("../config/db", "config")
 var svc = CreateSession(conf.DynamoDB.Endpoint)
 
 func CreateSession(endpoint string) *dynamodb.DynamoDB {

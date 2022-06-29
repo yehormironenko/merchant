@@ -1,0 +1,71 @@
+info:
+  title: Ebook Merchant
+  version: 1.0.0
+consumes:
+  - application/json
+produces:
+  - application/json
+swagger: '2.0'
+securityDefinitions:
+  keystone:
+    description: OpenStack Keystone Authentication
+    type: apiKey
+    in: header
+    name: x-auth-token
+
+security: []
+
+paths:
+  /api/register/:
+    post:
+      operationId: CreateUser
+      summary: Create new user
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Register'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Register'
+  /api/login/:
+    post:
+      operationId: LoginUser
+      summary: Endpoint for login
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Login'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+
+definitions:
+  Register:
+    type: object
+    properties:
+      username:
+        description: Name of the new user
+        type: string
+      password:
+        description: Passsword of new user
+        type: string
+      longname:
+        description: Fullname of user
+        type: string
+  Login:
+    type: object
+    properties:
+      username:
+        description: Name of the new user
+        type: string
+      password:
+        description: Passsword of new user
+        type: string
