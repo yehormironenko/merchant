@@ -25,7 +25,7 @@ services:
       - PORT_WEB_UI=8081
       - HOSTNAME_EXTERNAL=localstack
     ports:
-      - "127.0.0.1:4566:4566"
+      - "4566:4566"
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
