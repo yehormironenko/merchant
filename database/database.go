@@ -52,7 +52,13 @@ func GetUser(username string) (user models.User, err error) {
 
 	}
 	log.Print("User not found...")
+	prepareGive(&user)
+
 	return user, err
+}
+
+func prepareGive(user *models.User) {
+	user.Password = ""
 }
 
 func SaveUser(user models.User) error {

@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"merchant/database"
 	"merchant/pkg/models"
-	"merchant/utils"
+	"merchant/utils/token"
 	"net/http"
 )
 
@@ -76,15 +77,34 @@ func loginCheck(username string, password string) (string, error) {
 	var err error
 	user, err = database.GetUser(username)
 
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		return "", err
+	}
+
+	token, err := token.GenerateToken(user.Username)
+
 	if err != nil {
 		return "", err
 	}
 
-	err = utils.VerifyPassword(password, user.Password)
+	return token, nil
+}
+
+func CurrentUser(c *gin.Context) {
+
+	username, err := token.ExtractTokenID(c)
 
 	if err != nil {
-		return "", err
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	return "successful login", nil
+	u, err := database.GetUser(username)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "success", "data": u})
 }
