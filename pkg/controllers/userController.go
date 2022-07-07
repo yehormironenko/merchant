@@ -92,7 +92,7 @@ func loginCheck(username string, password string) (string, error) {
 
 func CurrentUser(c *gin.Context) {
 
-	username, err := token.ExtractTokenID(c)
+	username, err, expDate := token.ExtractTokenID(c)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -106,5 +106,5 @@ func CurrentUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "success", "data": u})
+	c.JSON(http.StatusOK, gin.H{"message": "success", "data": u, "expiration date": expDate})
 }
