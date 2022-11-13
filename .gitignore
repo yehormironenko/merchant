@@ -4,5 +4,9 @@ target
 *.iml
 log
 *.patch
+<<<<<<< HEAD
+volume
 
-
+=======
+volume/*
+>>>>>>> 68c593f (draft before repo)

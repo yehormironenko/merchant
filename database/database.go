@@ -8,11 +8,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"log"
 	c "merchant/config"
-	"merchant/pkg/models"
-	"merchant/utils"
+	"merchant/internal/models"
 )
 
-var conf, _ = c.LoadConfig("./config/db", "config")
+var conf, _ = c.LoadConfig("./cmd/config/db", "config")
 var svc = CreateSession(conf.DynamoDB.Endpoint)
 
 func CreateSession(endpoint string) *dynamodb.DynamoDB {
@@ -52,18 +51,11 @@ func GetUser(username string) (user models.User, err error) {
 
 	}
 	log.Print("User not found...")
-	prepareGive(&user)
 
 	return user, err
 }
 
-func prepareGive(user *models.User) {
-	user.Password = ""
-}
-
 func SaveUser(user models.User) error {
-
-	user.Password, _ = utils.HashPassword(user.Password)
 
 	av, err := dynamodbattribute.MarshalMap(user)
 	if err != nil {

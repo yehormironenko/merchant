@@ -1,0 +1,14 @@
+app:
+  aws:
+    region: local
+    endpoint: 127.0.0.1:8001
+    tables:
+      users: ew2-users
+  #  userIndexes:
+  #    index: new index // TODO add index
+    httpClient:
+      connectionTimeout: 10s
+
+  server:
+    port: :8091
+    shutdownTimeout: 20s

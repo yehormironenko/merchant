@@ -9,6 +9,7 @@ type Configurations struct {
 	DynamoDB DatabaseConfigurations
 }
 
+//TODO this is model
 // Config exported
 type DatabaseConfigurations struct {
 	DBName     string `mapstructure:"dbname"`
