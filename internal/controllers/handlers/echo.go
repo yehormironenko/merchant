@@ -1,10 +1,12 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
-	"merchant/internal/service"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"merchant/internal/service"
 )
 
 func Echo() gin.HandlerFunc {

@@ -1,10 +1,12 @@
 package user
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
-	"merchant/internal/controllers/requests"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"merchant/internal/controllers/requests"
 )
 
 func Register() gin.HandlerFunc {

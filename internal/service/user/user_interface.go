@@ -2,6 +2,7 @@ package user
 
 import (
 	"golang.org/x/net/context"
+
 	"merchant/internal/controllers/requests"
 )
 

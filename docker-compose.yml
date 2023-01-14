@@ -1,7 +1,7 @@
 version: '3.0'
 
 services:
-      
+
   merchant:
     build: ./
     container_name: go_merchant
@@ -10,15 +10,15 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-    - localstack
+      - localstack
     networks:
-    - service
+      - service
 
   localstack:
     image: localstack/localstack:latest
     container_name: localstack
     environment:
-     # - DEBUG=1
+      # - DEBUG=1
       - USE_SSL=0
       - EDGE_PORT=4566
       - AWS_CBOR_DISABLE=1

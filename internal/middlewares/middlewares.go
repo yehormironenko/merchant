@@ -1,9 +1,11 @@
 package middlewares
 
 import (
-	"github.com/gin-gonic/gin"
-	"merchant/utils/token"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"merchant/utils/token"
 )
 
 func JwtAuthMiddleware() gin.HandlerFunc {

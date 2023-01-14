@@ -13,7 +13,7 @@ securityDefinitions:
     in: header
     name: x-auth-token
 
-security: []
+security: [ ]
 
 paths:
   /api/register/:

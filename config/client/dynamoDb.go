@@ -1,12 +1,14 @@
 package client
 
 import (
+	"net/http"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"golang.org/x/net/context"
+
 	merchantConfig "merchant/config"
-	"net/http"
 )
 
 func DynamoDB(dynamoConf merchantConfig.Dynamo) *dynamodb.Client {

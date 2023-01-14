@@ -2,8 +2,9 @@ package config
 
 import (
 	_ "embed"
-	"github.com/knadh/koanf"
 	"log"
+
+	"github.com/knadh/koanf"
 )
 
 //go:embed app-config.yaml

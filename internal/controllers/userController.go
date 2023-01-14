@@ -1,13 +1,15 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	"merchant/database"
 	"merchant/internal/controllers/requests"
 	"merchant/internal/models"
 	"merchant/utils/token"
-	"net/http"
 )
 
 func Register(c *gin.Context) {

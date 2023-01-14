@@ -5,17 +5,21 @@ import (
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/rawbytes"
+	"github.com/rs/zerolog/log"
+
 	"merchant/config"
+	"merchant/config/logger"
 	"merchant/internal/controllers/handlers"
 	"merchant/internal/controllers/handlers/user"
 	"merchant/internal/route"
 )
 
 func main() {
-	k := koanf.New(".")
-	err := k.Load(rawbytes.Provider([]byte(config.Yaml)), yaml.Parser())
 
-	if err != nil {
+	logger.InitLogger()
+	k := koanf.New(".")
+	if err := k.Load(rawbytes.Provider([]byte(config.Yaml)), yaml.Parser()); err != nil {
+		log.Panic().Msg("Cannot read config file")
 		return
 	}
 
