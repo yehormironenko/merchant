@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func InitLogger() {
+func InitLogger() *zerolog.Logger {
 
 	//TODO change using flags
 	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
@@ -34,4 +34,6 @@ func InitLogger() {
 	log.Info().Msg("Info message")
 	log.Debug().Msg("Debug message")
 	log.Trace().Msg("Trace message")
+
+	return &log
 }

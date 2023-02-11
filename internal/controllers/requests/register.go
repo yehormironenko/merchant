@@ -1,6 +1,7 @@
 package requests
 
 type RegisterUser struct {
-	Username string `json:"username" binding:"required,gte=3"`
-	Longname string `json:"longname" binding:"required,gte=5"`
+	Login    string `json:"login" validate:"required,gte=3"`
+	Username string `json:"username" validate:"required,gte=3"`
+	Surname  string `json:"surname" validate:"required,gte=3"`
 }

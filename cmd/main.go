@@ -9,14 +9,12 @@ import (
 
 	"merchant/config"
 	"merchant/config/logger"
-	"merchant/internal/controllers/handlers"
-	"merchant/internal/controllers/handlers/user"
-	"merchant/internal/route"
+	"merchant/internal/controllers"
 )
 
 func main() {
 
-	logger.InitLogger()
+	logger := logger.InitLogger()
 	k := koanf.New(".")
 	if err := k.Load(rawbytes.Provider([]byte(config.Yaml)), yaml.Parser()); err != nil {
 		log.Panic().Msg("Cannot read config file")
@@ -24,17 +22,14 @@ func main() {
 	}
 
 	cfg := config.Bind(k)
-	r := gin.Default()
+	engine := gin.Default()
 
-	r.GET(route.Echo, handlers.Echo())
-
-	public := r.Group("/api")
-	public.POST(route.Register, user.Register())
+	controllers.Handlers(engine, logger)
 
 	//	public.POST(route.Login, controllers.Login)
-	//	protected := r.Group("/api/admin")
+	//	protected := engine.Group("/api/admin")
 	//protected.Use(middlewares.JwtAuthMiddleware())
 	//protected.GET("/user", controllers.CurrentUser)
 
-	r.Run(cfg.Server.Port)
+	engine.Run(cfg.Server.Port)
 }
