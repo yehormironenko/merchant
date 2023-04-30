@@ -1,11 +1,12 @@
 app:
   aws:
-    region: local
-    endpoint: 127.0.0.1:8001
-    tables:
-      users: ew2-users
-    httpClient:
-      connectionTimeout: 10s
+    dynamo:
+      region: local
+      endpoint: http://localhost:8042
+      tables:
+        users: users
+      httpClient:
+        connectionTimeout: 10s
 
   server:
     port: :8091

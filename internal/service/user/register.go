@@ -21,7 +21,11 @@ func New(userRepo repository.UserRepo, logger *zerolog.Logger) *UserService {
 	}
 }
 
-func (us *UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) {
+func (us *UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) error {
 	log.Info().Msg("service:RegisterNewUser")
-
+	err := us.userRepo.RegisterUser(ctx, req)
+	if err != nil {
+		return err
+	}
+	return nil
 }

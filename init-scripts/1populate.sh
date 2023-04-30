@@ -2,7 +2,7 @@
 
 echo "########### Creating table with global secondary index ###########"
 
-aws dynamodb --endpoint-url=http://localhost:4566 create-table \
+aws dynamodb --endpoint-url=http://localhost:8042 create-table \
                --table-name users \
                --attribute-definitions \
 	             AttributeName=longname,AttributeType=S \
@@ -16,13 +16,13 @@ aws dynamodb --endpoint-url=http://localhost:4566 create-table \
 echo "################# Table created ###################"
 
 
-aws --endpoint-url=http://localhost:4566 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user1\"}, \"longname\": {\"S\": \"Mr. Bean\"}}"
+aws --endpoint-url=http://localhost:8042 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user1\"}, \"longname\": {\"S\": \"Mr. Bean\"}}"
 
-aws --endpoint-url=http://localhost:4566 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user2\"}, \"longname\": {\"S\": \"John Smith\"}}"
+aws --endpoint-url=http://localhost:8042 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user2\"}, \"longname\": {\"S\": \"John Smith\"}}"
 
-aws --endpoint-url=http://localhost:4566 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user3\"}, \"longname\": {\"S\": \"Jan Kowalski\"}}"
+aws --endpoint-url=http://localhost:8042 dynamodb put-item  --table-name users  --item "{\"username\": {\"S\": \"user3\"}, \"longname\": {\"S\": \"Jan Kowalski\"}}"
 
 
 
 echo "########### Selecting all data from a table ###########"
-aws dynamodb scan --endpoint-url=http://localhost:4566 --table-name users
+aws dynamodb scan --endpoint-url=http://localhost:8042 --table-name users

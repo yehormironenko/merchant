@@ -7,5 +7,5 @@ import (
 )
 
 type UserService interface {
-	RegisterUser(ctx context.Context, req requests.RegisterUser)
+	RegisterUser(ctx context.Context, req requests.RegisterUser) error
 }

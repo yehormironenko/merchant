@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/rs/zerolog/log"
 	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -11,11 +12,10 @@ import (
 	merchantConfig "merchant/config"
 )
 
-func DynamoDB(dynamoConf merchantConfig.Dynamo) *dynamodb.Client {
+func NewDynamoClient(dynamoConf merchantConfig.Dynamo) *dynamodb.Client {
 	httpClient := configureHttpClient(dynamoConf.HttpClient)
 	ctx := context.Background()
-	/*log.AddActivity(ctx, "DYNAMO_CLIENT")
-	logger.Info(log.Msg(ctx, "configuring client"), zap.Object("dynamoConfig", dynamoConf))*/
+	log.Info().Object("dynamoConfig", dynamoConf)
 	opts := []func(*config.LoadOptions) error{
 		config.WithHTTPClient(httpClient),
 		config.WithRegion(dynamoConf.Region),
@@ -33,7 +33,7 @@ func DynamoDB(dynamoConf merchantConfig.Dynamo) *dynamodb.Client {
 	conf, err := config.LoadDefaultConfig(ctx, opts...)
 
 	if err != nil {
-		//logger.Panic(log.Msg(ctx, "failed to configure DynamoDB client"), zap.Error(err))
+		log.Panic().Msg("failed to configure NewDynamoClient client")
 	}
 	return dynamodb.NewFromConfig(conf)
 }

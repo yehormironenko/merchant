@@ -8,32 +8,18 @@ services:
     command: go run ./main.go
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8091:8091"
     depends_on:
-      - localstack
+      - dynamodb
     networks:
       - service
 
-  localstack:
-    image: localstack/localstack:latest
-    container_name: localstack
-    environment:
-      # - DEBUG=1
-      - USE_SSL=0
-      - EDGE_PORT=4566
-      - AWS_CBOR_DISABLE=1
-      - DOCKER_HOST=unix:///var/run/docker.sock
-      - HOSTNAME=localstack
-      - SERVICES=dynamodb
-      - AWS_DEFAULT_REGION=eu-west-2
+  dynamodb:
+    image: amazon/dynamodb-local
+    hostname: dynamodb-local
+    container_name: dynamodb-local
     ports:
-      - '4566:4566'
-    volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./init-scripts:/docker-entrypoint-initaws.d"
-    networks:
-      - service
+      - "8042:8000"
 
 networks:
   service:

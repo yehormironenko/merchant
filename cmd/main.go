@@ -6,6 +6,9 @@ import (
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/rawbytes"
 	"github.com/rs/zerolog/log"
+	"merchant/config/client"
+	"merchant/internal/repository"
+	"merchant/internal/service/user"
 
 	"merchant/config"
 	"merchant/config/logger"
@@ -24,9 +27,16 @@ func main() {
 	cfg := config.Bind(k)
 	engine := gin.Default()
 
-	controllers.Handlers(engine, logger)
+	dynamoClient := client.NewDynamoClient(cfg.Dynamo)
+	// repository
+	userRepo := repository.New(dynamoClient, cfg.Dynamo, logger)
 
-	//	public.POST(route.Login, controllers.Login)
+	// services
+	userService := user.New(userRepo, logger)
+
+	controllers.Handlers(engine, userService, logger)
+
+	//	public.POST(route.Username, controllers.Username)
 	//	protected := engine.Group("/api/admin")
 	//protected.Use(middlewares.JwtAuthMiddleware())
 	//protected.GET("/user", controllers.CurrentUser)

@@ -2,6 +2,7 @@ package user
 
 import (
 	"log"
+	"merchant/internal/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 	"merchant/internal/controllers/requests"
 )
 
-func Register(logger *zerolog.Logger) gin.HandlerFunc {
+func Register(userService service.UserService, logger *zerolog.Logger) gin.HandlerFunc {
 
 	return func(context *gin.Context) {
 		var req requests.RegisterUser
@@ -20,8 +21,14 @@ func Register(logger *zerolog.Logger) gin.HandlerFunc {
 			logger.Err(err).Msg("Bad request to register endpoint")
 			return
 		}
+		err := userService.RegisterUser(context, req)
+		if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			logger.Err(err).Msg("Bad request to register endpoint")
+			return
+		}
 		log.Printf("New Input data %s ", &req)
 
-		context.JSON(http.StatusOK, "Created")
+		context.JSON(http.StatusCreated, "Created")
 	}
 }
