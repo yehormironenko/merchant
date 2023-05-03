@@ -31,15 +31,14 @@ func (ur *userRepo) RegisterUser(ctx context.Context, request requests.RegisterU
 	// TODO ctx for tracing in the future
 	ur.logger.Info().Msg("registering new user")
 
-	item, err := ur.db.PutItem(ctx, &dynamodb.PutItemInput{
+	_, err := ur.db.PutItem(ctx, &dynamodb.PutItemInput{
 		TableName: aws.String(ur.tables.Users),
 		Item: map[string]types.AttributeValue{
 			"username": &types.AttributeValueMemberS{Value: request.Username},
 			"longname": &types.AttributeValueMemberS{Value: fmt.Sprintf("%s %s", request.Firstname, request.Surname)},
 		},
 	})
-	fmt.Println(item)
-
+	//ur.logger.Log().Object("item", item) //TODO implement me
 	if err != nil {
 		return err
 	}
