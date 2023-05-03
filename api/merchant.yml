@@ -13,8 +13,6 @@ securityDefinitions:
     in: header
     name: x-auth-token
 
-security: [ ]
-
 paths:
   /api/register/:
     post:
@@ -31,21 +29,6 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Register'
-  /api/login/:
-    post:
-      operationId: LoginUser
-      summary: Endpoint for login
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: '#/definitions/Login'
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Login'
 
 definitions:
   Register:
@@ -54,18 +37,15 @@ definitions:
       username:
         description: Name of the new user
         type: string
-      password:
-        description: Passsword of new user
+      firstname:
+        description: First name of user
         type: string
-      longname:
-        description: Fullname of user
+      surname:
+        description: Surname of the user
         type: string
-  Login:
-    type: object
-    properties:
-      username:
-        description: Name of the new user
+      email:
+        description: Email of the user
         type: string
-      password:
-        description: Passsword of new user
+      phoneNumber:
+        description: User phone number
         type: string

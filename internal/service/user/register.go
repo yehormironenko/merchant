@@ -2,7 +2,6 @@ package user
 
 import (
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/net/context"
 
 	"merchant/internal/controllers/requests"
@@ -22,10 +21,12 @@ func New(userRepo repository.UserRepo, logger *zerolog.Logger) *UserService {
 }
 
 func (us *UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) error {
-	log.Info().Msg("service:RegisterNewUser")
+	us.logger.Info().Msg("service:RegisterNewUser")
 	err := us.userRepo.RegisterUser(ctx, req)
 	if err != nil {
+		us.logger.Error().AnErr("error", err).Msg("user was not registered,")
 		return err
 	}
+	us.logger.Info().Msg("the user has been successfully registered")
 	return nil
 }
