@@ -15,7 +15,7 @@ services:
     command:  sh -c 'sh /go/src/app/init-scripts/populate.sh && go run /go/src/app/cmd/main.go'
     networks:
      service:
-       ipv4_address: 172.19.0.3
+       ipv4_address: 10.11.0.2
 
   dynamodb:
     image: amazon/dynamodb-local
@@ -26,7 +26,7 @@ services:
     command: [ "-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory" ]
     networks:
       service:
-        ipv4_address: 172.19.0.2
+        ipv4_address: 10.11.0.3
 
 networks:
   service:
