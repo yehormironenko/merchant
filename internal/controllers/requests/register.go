@@ -6,7 +6,7 @@ type RegisterUser struct {
 	Username    string `json:"username" validate:"required,gte=3"`
 	Firstname   string `json:"firstname" validate:"required,gte=3"`
 	Surname     string `json:"surname" validate:"required,gte=3"`
-	Email       string `json:"email" validate:"email"`
+	Email       string `json:"email" validate:"required,email"`
 	PhoneNumber string `json:"phoneNumber" validate:"e164"`
 }
 

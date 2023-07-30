@@ -2,7 +2,7 @@ app:
   aws:
     dynamo:
       region: local
-      endpoint: http://10.11.0.3:8000
+      endpoint: http://127.0.0.1:8042
       tables:
         users: users
       httpClient:
