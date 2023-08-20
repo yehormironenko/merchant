@@ -1,8 +1,9 @@
 package user
 
 import (
-	"merchant/internal/service"
 	"net/http"
+
+	"merchant/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
@@ -15,11 +16,7 @@ func Register(userService service.UserService, logger *zerolog.Logger) gin.Handl
 	return func(context *gin.Context) {
 		var req requests.RegisterUser
 		logger.Info().Msg("handlers:RegisterUserExecutor")
-		if err := context.ShouldBindJSON(&req); err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			logger.Err(err).Msg("Bad request to register endpoint")
-			return
-		}
+
 		err := userService.RegisterUser(context, req)
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

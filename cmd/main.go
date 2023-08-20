@@ -7,6 +7,7 @@ import (
 	"github.com/knadh/koanf/providers/rawbytes"
 
 	"merchant/config/client"
+	"merchant/internal/controllers/validators"
 	"merchant/internal/repository"
 	"merchant/internal/service/user"
 
@@ -17,7 +18,7 @@ import (
 
 func main() {
 	logger := logger.InitLogger()
-
+	validator := validators.New(logger)
 	cfg, err := loadConfig()
 	if err != nil {
 		logger.Error().Msg("Cannot read config file: " + err.Error())
@@ -30,7 +31,7 @@ func main() {
 	userRepo := repository.New(dynamoClient, cfg.Dynamo, logger)
 	userService := user.New(userRepo, logger)
 
-	controllers.Handlers(engine, userService, logger)
+	controllers.Handlers(engine, userService, validator, logger)
 
 	engine.Run(cfg.Server.Port)
 }
