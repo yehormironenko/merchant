@@ -7,7 +7,7 @@ type RegisterUser struct {
 	Firstname   string `json:"firstname" validate:"required,gte=3"`
 	Surname     string `json:"surname" validate:"required,gte=3"`
 	Email       string `json:"email" validate:"required,email"`
-	PhoneNumber string `json:"phoneNumber,omitempty" validate:"e164"`
+	PhoneNumber string `json:"phoneNumber,omitempty" validate:"omitempty,e164"`
 }
 
 func (r RegisterUser) MarshalZerologObject(e *zerolog.Event) {

@@ -20,7 +20,7 @@ func Handlers(engine *gin.Engine, userService service.UserService, validator val
 	engine.GET(route.Echo, handlers.Echo(logger))
 
 	public := engine.Group("/api")
-	public.POST(route.Register, middleware.GetRegisterUserRequestvalidator(validator, logger), user.Register(userService, logger))
+	public.POST(route.Register, middleware.GetRegisterUserRequestValidator(validator, logger), user.Register(userService, logger))
 
 	engine.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, "not found")

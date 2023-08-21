@@ -10,7 +10,9 @@ import (
 	"merchant/internal/controllers/validators"
 )
 
-func GetRegisterUserRequestvalidator(validator validators.Validators, logger *zerolog.Logger) gin.HandlerFunc {
+const RegisterRequestCtxKey = "RegisterRequestCtxKey"
+
+func GetRegisterUserRequestValidator(validator validators.Validators, logger *zerolog.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		var registerRequest requests.RegisterUser
@@ -26,6 +28,8 @@ func GetRegisterUserRequestvalidator(validator validators.Validators, logger *ze
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+
+		c.Set(RegisterRequestCtxKey, registerRequest)
 
 		c.Next()
 	}
