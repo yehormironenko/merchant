@@ -1,12 +1,17 @@
 package user
 
 import (
+	"crypto/sha1"
+	"fmt"
+
 	"github.com/rs/zerolog"
 	"golang.org/x/net/context"
 
 	"merchant/internal/controllers/requests"
 	"merchant/internal/repository"
 )
+
+const salt = "Gvug2HK4HDNCXSfW3Fsw2RmOl"
 
 type UserService struct {
 	userRepo repository.UserRepo
@@ -20,13 +25,20 @@ func New(userRepo repository.UserRepo, logger *zerolog.Logger) *UserService {
 	}
 }
 
-func (us UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) error {
-	us.logger.Info().Msg("service:RegisterNewUser")
-	err := us.userRepo.RegisterUser(ctx, req)
+func (u UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) error {
+	u.logger.Info().Msg("service:RegisterNewUser")
+	req.Password = u.generatePasswordHash(req.Password)
+	err := u.userRepo.RegisterUser(ctx, req)
 	if err != nil {
-		us.logger.Error().AnErr("error", err).Msg("user was not registered,")
+		u.logger.Error().AnErr("error", err).Msg("user was not registered,")
 		return err
 	}
-	us.logger.Info().Msg("the user has been successfully registered")
+	u.logger.Info().Msg("the user has been successfully registered")
 	return nil
+}
+
+func (u UserService) generatePasswordHash(password string) string {
+	hash := sha1.New()
+	hash.Write([]byte(password))
+	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
 }

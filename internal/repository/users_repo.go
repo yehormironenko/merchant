@@ -15,11 +15,12 @@ import (
 )
 
 const (
-	userId      = "userId"
-	username    = "username"
-	fullname    = "fullname"
-	email       = "email"
-	phoneNumber = "phoneNumber"
+	userId       = "userId"
+	username     = "username"
+	passwordHash = "password hash"
+	fullname     = "fullname"
+	email        = "email"
+	phoneNumber  = "phoneNumber"
 )
 
 type userRepo struct {
@@ -67,11 +68,12 @@ func (ur *userRepo) RegisterUser(ctx context.Context, request requests.RegisterU
 	_, err = ur.db.PutItem(ctx, &dynamodb.PutItemInput{
 		TableName: aws.String(ur.tables.Users),
 		Item: map[string]types.AttributeValue{
-			userId:      &types.AttributeValueMemberS{Value: uuid.New().String()},
-			username:    &types.AttributeValueMemberS{Value: request.Username},
-			fullname:    &types.AttributeValueMemberS{Value: fmt.Sprintf("%s %s", request.Firstname, request.Surname)},
-			email:       &types.AttributeValueMemberS{Value: request.Email},
-			phoneNumber: &types.AttributeValueMemberS{Value: request.PhoneNumber},
+			userId:       &types.AttributeValueMemberS{Value: uuid.New().String()},
+			username:     &types.AttributeValueMemberS{Value: request.Username},
+			passwordHash: &types.AttributeValueMemberS{Value: request.Password},
+			fullname:     &types.AttributeValueMemberS{Value: fmt.Sprintf("%s %s", request.Firstname, request.Surname)},
+			email:        &types.AttributeValueMemberS{Value: request.Email},
+			phoneNumber:  &types.AttributeValueMemberS{Value: request.PhoneNumber},
 		},
 	})
 
