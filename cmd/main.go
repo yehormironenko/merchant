@@ -29,9 +29,10 @@ func main() {
 
 	dynamoClient := client.NewDynamoClient(cfg.Dynamo)
 	userRepo := repository.New(dynamoClient, cfg.Dynamo, logger)
-	userService := user.New(userRepo, logger)
+	userRegisterService := user.NewRegisterService(userRepo, logger)
+	userAuthService := user.NewAuthService(userRepo, logger)
 
-	controllers.Handlers(engine, userService, validator, logger)
+	controllers.Handlers(engine, userRegisterService, userAuthService, validator, logger)
 
 	engine.Run(cfg.Server.Port)
 }

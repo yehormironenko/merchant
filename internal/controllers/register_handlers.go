@@ -15,12 +15,13 @@ import (
 	"merchant/internal/route"
 )
 
-func Handlers(engine *gin.Engine, userService service.UserService, validator validators.Validators, logger *zerolog.Logger) {
+func Handlers(engine *gin.Engine, userRegisterService service.UserService, userAuthService service.AuthService, validator validators.Validators, logger *zerolog.Logger) {
 
 	engine.GET(route.Echo, handlers.Echo(logger))
 
 	public := engine.Group("/api")
-	public.POST(route.Register, middleware.GetRegisterUserRequestValidator(validator, logger), user.Register(userService, logger))
+	public.POST(route.Register, middleware.GetRegisterUserRequestValidator(validator, logger), user.Register(userRegisterService, logger))
+	public.POST(route.Auth, middleware.GetAuthUserRequestValidator(validator, logger), user.Auth(userAuthService, logger))
 
 	engine.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, "not found")

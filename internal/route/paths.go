@@ -1,7 +1,7 @@
 package route
 
 const (
-	Login    = "/login"
+	Auth     = "/auth"
 	Register = "/register"
 	Echo     = "/echo"
 )

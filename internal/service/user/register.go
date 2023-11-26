@@ -1,44 +1,45 @@
 package user
 
 import (
-	"crypto/sha1"
-	"fmt"
+	"context"
 
 	"github.com/rs/zerolog"
-	"golang.org/x/net/context"
+	"golang.org/x/crypto/bcrypt"
 
+	"merchant/internal"
 	"merchant/internal/controllers/requests"
 	"merchant/internal/repository"
 )
 
-const salt = "Gvug2HK4HDNCXSfW3Fsw2RmOl"
-
-type UserService struct {
+type RegisterService struct {
 	userRepo repository.UserRepo
 	logger   *zerolog.Logger
 }
 
-func New(userRepo repository.UserRepo, logger *zerolog.Logger) *UserService {
-	return &UserService{
+func NewRegisterService(userRepo repository.UserRepo, logger *zerolog.Logger) *RegisterService {
+	return &RegisterService{
 		userRepo: userRepo,
 		logger:   logger,
 	}
 }
 
-func (u UserService) RegisterUser(ctx context.Context, req requests.RegisterUser) error {
-	u.logger.Info().Msg("service:RegisterNewUser")
-	req.Password = u.generatePasswordHash(req.Password)
-	err := u.userRepo.RegisterUser(ctx, req)
+func (rs RegisterService) RegisterUserService(ctx context.Context, req requests.RegisterUser) error {
+	rs.logger.Info().Msg("service:RegisterNewUser")
+	req.Password = rs.generatePasswordHash(req.Password)
+	err := rs.userRepo.RegisterUser(ctx, req)
 	if err != nil {
-		u.logger.Error().AnErr("error", err).Msg("user was not registered,")
+		rs.logger.Error().AnErr("error", err).Msg("user was not registered,")
 		return err
 	}
-	u.logger.Info().Msg("the user has been successfully registered")
+	rs.logger.Info().Msg("the user has been successfully registered")
 	return nil
 }
 
-func (u UserService) generatePasswordHash(password string) string {
-	hash := sha1.New()
-	hash.Write([]byte(password))
-	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
+func (rs RegisterService) generatePasswordHash(password string) string {
+	// Generate a salted hash of the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password+internal.Salt), bcrypt.DefaultCost)
+	if err != nil {
+		return ""
+	}
+	return string(hashedPassword)
 }
