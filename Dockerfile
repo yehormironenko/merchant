@@ -1,5 +1,5 @@
 #base image
-FROM golang:1.19-alpine AS build
+FROM golang:1.22-alpine AS build
 
 # Set destination for COPY
 RUN mkdir -p /go/src/app
