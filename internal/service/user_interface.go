@@ -7,7 +7,7 @@ import (
 )
 
 type UserService interface {
-	RegisterUserService(ctx context.Context, req requests.RegisterUser) error
+	RegisterUserService(ctx context.Context, req requests.RegisterUser) (requests.RegisterUser, error)
 }
 
 type AuthService interface {

@@ -19,7 +19,7 @@ func Register(userService service.UserService, logger *zerolog.Logger) gin.Handl
 		logger.Info().Msg("handlers:RegisterUserExecutor")
 		req := context.Value(user.RegisterRequestCtxKey)
 
-		err := userService.RegisterUserService(context, req.(requests.RegisterUser))
+		userRequest, err := userService.RegisterUserService(context, req.(requests.RegisterUser))
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			logger.Err(err).Msg("Bad request to register endpoint")
@@ -27,6 +27,6 @@ func Register(userService service.UserService, logger *zerolog.Logger) gin.Handl
 		}
 		logger.Info().Object("data", req.(requests.RegisterUser)).Msg("user has been registered with following")
 
-		context.JSON(http.StatusCreated, "Created")
+		context.JSON(http.StatusCreated, userRequest)
 	}
 }

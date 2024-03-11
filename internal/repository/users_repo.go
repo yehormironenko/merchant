@@ -74,7 +74,7 @@ func (ur *userRepo) RegisterUser(ctx context.Context, request requests.RegisterU
 			userId:       &types.AttributeValueMemberS{Value: uuid.New().String()},
 			username:     &types.AttributeValueMemberS{Value: request.Username},
 			email:        &types.AttributeValueMemberS{Value: request.Email},
-			passwordHash: &types.AttributeValueMemberS{Value: request.Password},
+			passwordHash: &types.AttributeValueMemberS{Value: *request.Password},
 			fullname:     &types.AttributeValueMemberS{Value: fmt.Sprintf("%s %s", request.Firstname, request.Surname)},
 			phoneNumber:  &types.AttributeValueMemberS{Value: request.PhoneNumber},
 		},

@@ -23,23 +23,25 @@ func NewRegisterService(userRepo repository.UserRepo, logger *zerolog.Logger) *R
 	}
 }
 
-func (rs RegisterService) RegisterUserService(ctx context.Context, req requests.RegisterUser) error {
+func (rs RegisterService) RegisterUserService(ctx context.Context, req requests.RegisterUser) (requests.RegisterUser, error) {
 	rs.logger.Info().Msg("service:RegisterNewUser")
 	req.Password = rs.generatePasswordHash(req.Password)
 	err := rs.userRepo.RegisterUser(ctx, req)
 	if err != nil {
 		rs.logger.Error().AnErr("error", err).Msg("user was not registered,")
-		return err
+		return requests.RegisterUser{}, err
 	}
 	rs.logger.Info().Msg("the user has been successfully registered")
-	return nil
+	req.Password = nil
+	return req, nil
 }
 
-func (rs RegisterService) generatePasswordHash(password string) string {
+func (rs RegisterService) generatePasswordHash(password *string) *string {
 	// Generate a salted hash of the password using bcrypt
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password+internal.Salt), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*password+internal.Salt), bcrypt.DefaultCost)
 	if err != nil {
-		return ""
+		return nil
 	}
-	return string(hashedPassword)
+	stringHashedPassword := string(hashedPassword)
+	return &stringHashedPassword
 }
