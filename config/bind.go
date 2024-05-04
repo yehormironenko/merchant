@@ -13,13 +13,15 @@ var Yaml string
 type Config struct {
 	Dynamo Dynamo
 	Server Server
+	Client Reseller
 }
 
 func Bind(kfg *koanf.Koanf) Config {
 	appConfig := Config{}
 	for path, field := range map[string]interface{}{
-		"app.aws.dynamo": &appConfig.Dynamo,
-		"app.server":     &appConfig.Server,
+		"app.aws.dynamo":      &appConfig.Dynamo,
+		"app.server":          &appConfig.Server,
+		"app.client.reseller": &appConfig.Client,
 	} {
 		if err := kfg.Unmarshal(path, field); err != nil {
 			log.Panic("config binding failed")

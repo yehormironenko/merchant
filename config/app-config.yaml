@@ -11,3 +11,7 @@ app:
   server:
     port: :8091
     shutdownTimeout: 20s
+
+  client:
+    reseller:
+      endpoint: http://127.0.0.1:1323

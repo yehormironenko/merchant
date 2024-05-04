@@ -5,10 +5,12 @@ import (
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/rawbytes"
+	"github.com/yehormironenko/reseller/pkg/api"
 
 	"merchant/config/client"
 	"merchant/internal/controllers/validators"
 	"merchant/internal/repository"
+	"merchant/internal/service/reseller"
 	"merchant/internal/service/user"
 
 	"merchant/config"
@@ -25,6 +27,9 @@ func main() {
 		return
 	}
 
+	//externalClient
+	resellerClient := api.NewResellerApiClient(cfg.Client.Endpoint)
+
 	engine := gin.Default()
 
 	dynamoClient := client.NewDynamoClient(cfg.Dynamo)
@@ -32,7 +37,9 @@ func main() {
 	userRegisterService := user.NewRegisterService(userRepo, logger)
 	userAuthService := user.NewAuthService(userRepo, logger)
 
-	controllers.Handlers(engine, userRegisterService, userAuthService, validator, logger)
+	resellerSearchBookService := reseller.NewSearchBookService(resellerClient, logger)
+
+	controllers.Handlers(engine, userRegisterService, userAuthService, resellerSearchBookService, validator, logger)
 
 	engine.Run(cfg.Server.Port)
 }
