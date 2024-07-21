@@ -30,4 +30,7 @@ services:
 
 networks:
   service:
-    external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.11.0.0/24

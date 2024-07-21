@@ -15,7 +15,7 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/knadh/koanf v1.5.0
 	github.com/rs/zerolog v1.28.0
-	github.com/yehormironenko/reseller v0.0.6
+	github.com/yehormironenko/reseller v0.0.8
 	golang.org/x/crypto v0.22.0
 	golang.org/x/net v0.24.0
 )

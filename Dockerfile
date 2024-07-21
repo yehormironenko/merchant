@@ -10,12 +10,10 @@ WORKDIR /go/src/app
 COPY ./init-scripts/populate.sh /go/src/app/init-scripts/
 
 # Download Go modules
-RUN apk add --update git ca-certificates curl unzip py-pip build-base && rm -rf /var/cache/apk/*
+RUN apk add --update git ca-certificates curl unzip build-base aws-cli && rm -rf /var/cache/apk/*
 RUN go build -a -o /main cmd/main.go
 RUN go mod download
 
-# Install AWS CLI
-RUN python -m pip install awscli
 
 EXPOSE 8080
 
